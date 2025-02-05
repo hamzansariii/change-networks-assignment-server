@@ -6,13 +6,7 @@ const connectDatabase = require('./configs/database');
 const verifyJWT = require('./middlewares/verifyAuth');
 
 // List of allowed origins (no wildcard)
-const allowedOrigins = [
-    'https://assignment-client-git-main-hamza-ansaris-projects-39859990.vercel.app',
-    'https://assignment-client-gt2g4qbi7-hamza-ansaris-projects-39859990.vercel.app',
-    'https://assignment-client-plum.vercel.app',
-    'https://assignment-client-hamza-ansaris-projects-39859990.vercel.app',
-    'http://localhost:5000'
-];
+const allowedOrigins = ['*'];
 
 // CORS options configuration
 const corsOption = {
