@@ -137,18 +137,42 @@ router.put('/products/update/:id', upload.single('image_src'), async (req, res) 
     }
 });
 
-
-// Delete a product
 router.delete('/products/delete/:id', async (req, res) => {
     try {
-        const deletedProduct = await Product.findByIdAndDelete(req.params.id);
-        if (!deletedProduct) return res.status(404).json({ message: "Product not found" });
+        const { id } = req.params;
+
+        // Find the product to delete
+        const productToDelete = await Product.findById(id);
+
+        if (!productToDelete) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        // Delete the product
+        await Product.findByIdAndDelete(id);
+
+
+        // Optionally delete the image file if you are storing it locally
+        if (productToDelete.image_src) {
+            const path = `.${productToDelete.image_src}`; // Construct the path to the image.  The "." is important!
+            try {
+                await fs.promises.unlink(path); // Use fs.promises for async file deletion
+                console.log('Image deleted successfully:', path);
+            } catch (imageError) {
+                console.error('Error deleting image:', imageError);
+                // If image deletion fails, log the error but don't stop the product deletion
+            }
+        }
+
         res.status(200).json({ message: "Product deleted successfully" });
+
     } catch (error) {
-        console.error(error);
+        console.error("Error deleting product:", error);
         res.status(500).json({ error: "Failed to delete product" });
     }
 });
+
+
 
 
 

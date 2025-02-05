@@ -11,7 +11,7 @@ const allowedOrigins = ['http://localhost:5000', 'https://change-networks-assign
 // CORS options configuration
 const corsOption = {
     origin: allowedOrigins,
-    methods: ['GET', 'POST'],  // Specify allowed methods
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Specify allowed methods
     credentials: true,  // Allow credentials (cookies, authorization headers, etc.)
 };
 // CORS configuration
