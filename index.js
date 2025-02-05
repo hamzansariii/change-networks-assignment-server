@@ -16,31 +16,42 @@ const allowedOrigins = [
 // CORS options configuration
 const corsOptions = {
     origin: (origin, callback) => {
+        // Allow the origin if it matches one of the allowedOrigins or if there is no origin (e.g. during server-to-server requests)
         if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-            callback(null, true); // Allow the origin
+            callback(null, true);
         } else {
-            callback(new Error('Not allowed by CORS')); // Reject the origin
+            callback(new Error('Not allowed by CORS'));
         }
     },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  // Ensure OPTIONS is included
+    credentials: true,  // Allow credentials (cookies, authorization headers)
 };
 
 // Enable CORS for all routes
 app.use(cors(corsOptions));
-// Explicitly handle OPTIONS requests
-app.options('*', cors(corsOptions));
 
+// Explicitly handle OPTIONS requests (for preflight requests)
+app.options('*', (req, res, next) => {
+    console.log('Handling OPTIONS request');
+    cors(corsOptions)(req, res, next);
+});
+
+// Middleware to parse JSON body
 app.use(express.json());
+
+// Use routes from '/api' folder (make sure you have this setup in ./routes)
 app.use('/api', require('./routes'));
+
+// Serve static files from the "public" directory
 app.use(express.static('public'));
 
 // Apply the JWT middleware for all routes except /login
 app.use((req, res, next) => {
+    // Skip JWT verification for the login route
     if (req.path === '/api/login' || req.path === '/') {
-        return next(); // Skip JWT verification for the login route
+        return next();
     }
-    verifyJWT(req, res, next); // Apply JWT middleware to all other routes
+    verifyJWT(req, res, next);  // Apply JWT middleware to all other routes
 });
 
 // Connect to the MongoDB database
