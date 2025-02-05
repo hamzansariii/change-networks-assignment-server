@@ -97,7 +97,7 @@ router.get('/products/:id', async (req, res) => {
 });
 
 // Insert a new product
-router.post('/products/add', upload.single('image'), async (req, res) => {
+router.post('/products/add', upload.single('image_src'), async (req, res) => {
     try {
         const body = req.body
         const product = { ...body, image_src: `/uploads/images/${req.file.filename}` }
@@ -111,7 +111,7 @@ router.post('/products/add', upload.single('image'), async (req, res) => {
 });
 
 // Update a product
-router.put('/products/update/:id', upload.single('image'), async (req, res) => {
+router.put('/products/update/:id', upload.single('image_src'), async (req, res) => {
     try {
         const { id } = req.params;
         const body = req.body;
