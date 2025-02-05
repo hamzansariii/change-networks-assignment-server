@@ -7,14 +7,17 @@ const verifyJWT = require('./middlewares/verifyAuth')
 
 
 
-const allowedOrigins = ['*', 'https://assignment-client-gt2g4qbi7-hamza-ansaris-projects-39859990.vercel.app/'];  // Allow any origin
+const allowedOrigins = ['*', 'https://assignment-client-gt2g4qbi7-hamza-ansaris-projects-39859990.vercel.app'];
+
 const corsOptions = {
-    origin: allowedOrigins,  // This will allow requests from any origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Specify allowed methods
-    credentials: true,  // Allow credentials (cookies, authorization headers, etc.)
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  // Ensure OPTIONS is included
+    credentials: true,
 };
 
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Explicitly handle OPTIONS requests
+
 app.use(express.json());
 app.use('/api', require('./routes'));
 app.use(express.static('public'));
