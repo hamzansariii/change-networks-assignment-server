@@ -40,7 +40,7 @@ connectDatabase();
 
 // Root route
 app.get('/', (req, res) => {
-    res.send('Server API Running Well!');
+    res.send('Server API Running Well!!');
 });
 
 // Start the server
