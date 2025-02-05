@@ -7,7 +7,7 @@ const verifyJWT = require('./middlewares/verifyAuth')
 
 
 
-const allowedOrigins = ['*'];  // Allow any origin
+const allowedOrigins = ['*', 'https://assignment-client-gt2g4qbi7-hamza-ansaris-projects-39859990.vercel.app/'];  // Allow any origin
 const corsOptions = {
     origin: allowedOrigins,  // This will allow requests from any origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Specify allowed methods
