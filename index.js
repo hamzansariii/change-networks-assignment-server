@@ -7,7 +7,7 @@ const verifyJWT = require('./middlewares/verifyAuth')
 
 
 
-const allowedOrigins = ['*', 'https://assignment-client-gt2g4qbi7-hamza-ansaris-projects-39859990.vercel.app'];
+const allowedOrigins = ['*'];
 
 const corsOptions = {
     origin: allowedOrigins,
