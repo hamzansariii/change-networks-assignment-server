@@ -3,6 +3,7 @@ const app = express()
 const cors = require('cors');
 const port = process.env.PORT || 3000
 const connectDatabase = require('./configs/database')
+const verifyJWT = require('./middlewares/verifyAuth')
 
 
 
@@ -20,7 +21,7 @@ app.use(express.static('public'));
 
 // Apply the JWT middleware for all routes except /login
 app.use((req, res, next) => {
-    if (req.path === '/api/login') {
+    if (req.path === '/api/login' || req.path === '/') {
         return next(); // Skip JWT verification for the login route
     }
     verifyJWT(req, res, next); // Apply JWT middleware to all other routes
@@ -29,6 +30,14 @@ app.use((req, res, next) => {
 
 //Connect the mongoDB database
 connectDatabase()
+
+
+
+app.get('/', (req, res) => {
+    res.send('Server API Running Well!')
+})
+
+
 
 
 
