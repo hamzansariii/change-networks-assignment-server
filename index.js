@@ -6,7 +6,7 @@ const connectDatabase = require('./configs/database');
 const verifyJWT = require('./middlewares/verifyAuth');
 
 // List of allowed origins (no wildcard)
-const allowedOrigins = ['*'];
+const allowedOrigins = ['http://localhost:5000', 'https://change-networks-assignment-client.onrender.com'];
 
 // CORS options configuration
 const corsOption = {
