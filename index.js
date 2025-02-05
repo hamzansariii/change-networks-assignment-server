@@ -10,31 +10,18 @@ const allowedOrigins = [
     'https://assignment-client-git-main-hamza-ansaris-projects-39859990.vercel.app',
     'https://assignment-client-gt2g4qbi7-hamza-ansaris-projects-39859990.vercel.app',
     'https://assignment-client-plum.vercel.app',
-    'https://assignment-client-hamza-ansaris-projects-39859990.vercel.app'
+    'https://assignment-client-hamza-ansaris-projects-39859990.vercel.app',
+    'http://localhost:5000'
 ];
 
 // CORS options configuration
-const corsOptions = {
-    origin: (origin, callback) => {
-        // Allow the origin if it matches one of the allowedOrigins or if there is no origin (e.g. during server-to-server requests)
-        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  // Ensure OPTIONS is included
-    credentials: true,  // Allow credentials (cookies, authorization headers)
+const corsOption = {
+    origin: allowedOrigins,
+    methods: ['GET', 'POST'],  // Specify allowed methods
+    credentials: true,  // Allow credentials (cookies, authorization headers, etc.)
 };
-
-// Enable CORS for all routes
-app.use(cors(corsOptions));
-
-// Explicitly handle OPTIONS requests (for preflight requests)
-app.options('*', (req, res, next) => {
-    console.log('Handling OPTIONS request');
-    cors(corsOptions)(req, res, next);
-});
+// CORS configuration
+app.use(cors(corsOption));
 
 // Middleware to parse JSON body
 app.use(express.json());
