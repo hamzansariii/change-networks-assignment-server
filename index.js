@@ -6,30 +6,32 @@ const connectDatabase = require('./configs/database')
 
 
 
-const allowedOrigins = ['https://tsbi.tech', 'http://localhost:5000', 'http://tsbi.tech'];
-const corsOption = {
-    origin: allowedOrigins,
-    methods: ['GET', 'POST'],  // Specify allowed methods
+const allowedOrigins = ['*'];  // Allow any origin
+const corsOptions = {
+    origin: allowedOrigins,  // This will allow requests from any origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Specify allowed methods
     credentials: true,  // Allow credentials (cookies, authorization headers, etc.)
 };
-app.use(cors(corsOption));
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/api', require('./routes'));
 app.use(express.static('public'));
+
+// Apply the JWT middleware for all routes except /login
+app.use((req, res, next) => {
+    if (req.path === '/api/login') {
+        return next(); // Skip JWT verification for the login route
+    }
+    verifyJWT(req, res, next); // Apply JWT middleware to all other routes
+});
 
 
 //Connect the mongoDB database
 connectDatabase()
 
-const User = require("./models/user");
 
 
-
-app.get('/', async (req, res) => {
-    const newUser = new User({ name: "Admin", age: 30, email: "admin@admin.com", role: 'Employee', password: 'sdfesdf' });
-    await newUser.save();
-    res.send('Hello, World!');
-});
 
 
 app.listen(port, () => {
